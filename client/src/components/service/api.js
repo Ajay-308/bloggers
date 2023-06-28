@@ -1,12 +1,16 @@
 import axios from "axios";
 
-import { API_NOTIFICATION_MESSAGES, SERVICE_URLS } from "../constants/config";
+import {
+  API_NOTIFICATIONS_MESSAGES,
+  SERVICE_URL,
+} from "../../constants/config";
+
 import {
   getAccessToken,
   getRefreshToken,
   setAccessToken,
   getType,
-} from "../utils/common-utils";
+} from "../utils/utils";
 
 const API_URL = "http://localhost:8000";
 
@@ -71,7 +75,7 @@ const ProcessError = async (error) => {
       console.log("ERROR IN RESPONSE: ", error.toJSON());
       return {
         isError: true,
-        msg: API_NOTIFICATION_MESSAGES.responseFailure,
+        msg: API_NOTIFICATIONS_MESSAGES.responseFailure,
         code: error.response.status,
       };
     }
@@ -80,7 +84,7 @@ const ProcessError = async (error) => {
     console.log("ERROR IN RESPONSE: ", error.toJSON());
     return {
       isError: true,
-      msg: API_NOTIFICATION_MESSAGES.requestFailure,
+      msg: API_NOTIFICATIONS_MESSAGES.requestFailure,
       code: "",
     };
   } else {
@@ -88,7 +92,7 @@ const ProcessError = async (error) => {
     console.log("ERROR IN RESPONSE: ", error.toJSON());
     return {
       isError: true,
-      msg: API_NOTIFICATION_MESSAGES.networkError,
+      msg: API_NOTIFICATIONS_MESSAGES.networkError,
       code: "",
     };
   }
@@ -96,7 +100,7 @@ const ProcessError = async (error) => {
 
 const API = {};
 
-for (const [key, value] of Object.entries(SERVICE_URLS)) {
+for (const [key, value] of Object.entries(SERVICE_URL)) {
   API[key] = (body, showUploadProgress, showDownloadProgress) =>
     axiosInstance({
       method: value.method,
