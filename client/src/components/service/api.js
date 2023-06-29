@@ -47,8 +47,10 @@ axiosInstance.interceptors.response.use(
   }
 );
 
+///////////////////////////////
 // If success -> returns { isSuccess: true, data: object }
 // If fail -> returns { isFailure: true, status: string, msg: string, code: int }
+//////////////////////////////
 const processResponse = (response) => {
   if (response?.status === 200) {
     return { isSuccess: true, data: response.data };
@@ -62,15 +64,15 @@ const processResponse = (response) => {
   }
 };
 
+///////////////////////////////
 // If success -> returns { isSuccess: true, data: object }
 // If fail -> returns { isError: true, status: string, msg: string, code: int }
-
+//////////////////////////////
 const ProcessError = async (error) => {
   if (error.response) {
     // Request made and server responded with a status code
     // that falls out of the range of 2xx
     if (error.response?.status === 403) {
-      sessionStorage.clear();
     } else {
       console.log("ERROR IN RESPONSE: ", error.toJSON());
       return {

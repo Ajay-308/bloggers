@@ -1,5 +1,6 @@
+import React, { useRef } from "react";
 // API NOTIFICATION MESSAGES
-export const API_NOTIFICATION_MESSAGES = {
+export const API_NOTIFICATIONS_MESSAGES = {
   loading: {
     title: "Loading...",
     message: "Data is being loaded. Please wait",
@@ -24,10 +25,10 @@ export const API_NOTIFICATION_MESSAGES = {
   },
 };
 
-// API SERVICE URL
-// SAMPLE REQUEST
-// NEED SERVICE CALL: { url: "/", method: "POST/GET/PUT/DELETE" }
-export const SERVICE_URLS = {
+// // API SERVICE URL
+// // SAMPLE REQUEST
+// // NEED SERVICE CALL: { url: "/", method: "POST/GET/PUT/DELETE" }
+export const SERVICE_URL = {
   userLogin: { url: "/login", method: "POST" },
   userSignup: { url: "/signup", method: "POST" },
   getAllPosts: { url: "/posts", method: "GET", params: true },
