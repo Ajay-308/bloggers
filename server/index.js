@@ -1,28 +1,27 @@
-import express, { Router } from "express";
+import express from "express";
 import dotenv from "dotenv";
-import Connection from "./databse/db.js";
+import cors from "cors";
+import bodyParser from "body-parser";
 
-import router from "./routes/route.js";
+//components
+import Connection from "./database/db.js";
+import Router from "./routes/route.js";
 
 dotenv.config();
 
 const app = express();
+
+app.use(cors());
+app.use(bodyParser.json({ extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", Router);
 
-const PORT = process.env.PORT || 8000;
-// //routes
-// app.use("/api/v1/auth", authRoutes);
-// //listen
+const PORT = 8000;
+const username = process.env.DB_USERNAME;
+const password = process.env.DB_PASSWORD;
 
-const USERNAME = process.env.DB_username;
-const PASSWORD = process.env.DB_password;
 Connection(username, password);
 
-Connection(USERNAME, PASSWORD);
-
-app.listen(8000, () => {
-  console.log(
-    `server running on ${process.env.DEV_MODE} mode on port ${PORT}`.bgCyan
-      .white
-  );
-});
+app.listen(PORT, () =>
+  console.log(`Server is running successfully on PORT ${PORT}`)
+);
