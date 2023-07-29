@@ -4,7 +4,7 @@ import { Box, TextareaAutosize, Button, styled } from '@mui/material';
 import { DataContext } from '../../context/DataProvider';
 
 // import {  } from '../../service/api';'
-import { API } from '../service/api'
+import { API } from '../../service/api'
 
 //components
 import Comment from './Comment';

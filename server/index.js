@@ -20,8 +20,14 @@ const PORT = 8000;
 const username = process.env.DB_USERNAME;
 const password = process.env.DB_PASSWORD;
 
-Connection(username, password);
-
-app.listen(PORT, () =>
-  console.log(`Server is running successfully on PORT ${PORT}`)
-);
+// Connection(username, password);
+Connection(username, password)
+  .then(() => {
+    app.listen(PORT, () =>
+      console.log(`Server is running successfully on PORT ${PORT}`)
+    );
+  })
+  .catch((err) => {
+    console.error("Error connecting to the database:", err.message);
+    // You might want to handle the error further (e.g., retrying, graceful shutdown, etc.)
+  });

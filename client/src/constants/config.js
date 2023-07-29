@@ -1,4 +1,3 @@
-import React, { useRef } from "react";
 // API NOTIFICATION MESSAGES
 export const API_NOTIFICATIONS_MESSAGES = {
   loading: {
