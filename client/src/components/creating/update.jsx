@@ -45,7 +45,7 @@ const initialPost = {
     title: '',
     description: '',
     picture: '',
-    username: 'codeforinterview',
+    username: 'AJAYcoder',
     categories: 'Tech',
     createdDate: new Date()
 }
