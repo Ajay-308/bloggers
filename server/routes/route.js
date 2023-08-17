@@ -6,22 +6,22 @@ import {
   deletePost,
   getPost,
   getAllPosts,
-} from "../controller/post-controller.js";
-import { uploadImage, getImage } from "../controller/image-controller.js";
+} from "../controllers/post-controller.js";
+import { uploadImage, getImage } from "../controllers/image-controller.js";
 import {
   newComment,
   getComments,
   deleteComment,
-} from "../controller/comment-controller.js";
+} from "../controllers/comment-controller.js";
 import {
   loginUser,
   singupUser,
   logoutUser,
-} from "../controller/user-controller.js";
+} from "../controllers/user-controller.js";
 import {
   authenticateToken,
   createNewToken,
-} from "../controller/jwt-controller.js";
+} from "../controllers/jwt-controller.js";
 
 import upload from "../utils/upload.js";
 

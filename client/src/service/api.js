@@ -74,32 +74,38 @@ const processError = (error) => {
 };
 
 const API = {};
-
 for (const [key, value] of Object.entries(SERVICE_URL)) {
-  API[key] = (body, showUploadProgress, showDownloadProgress) =>
-    axiosInstance({
-      method: value.method(),
-      url: value.url,
-      data: body,
-      responseType: value.responseType,
-      onUploadProgress: function (progressEvent) {
-        if (showUploadProgress) {
-          let percentageCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          showUploadProgress(percentageCompleted);
-        }
-      },
-      onDownloadProgress: function (progressEvent) {
-        if (showDownloadProgress) {
-          let percentageCompleted = Math.round(
-            (progressEvent.loaded * 100) / progressEvent.total
-          );
-          showDownloadProgress(percentageCompleted);
-        }
-      },
-    });
+  API[key] = async (body, showUploadProgress, showDownloadProgress) => {
+    try {
+      const response = await axiosInstance({
+        method: value.method,
+        url: value.url,
+        data: body,
+        responseType: value.responseType,
+        onUploadProgress: function (progressEvent) {
+          if (showUploadProgress) {
+            let percentageCompleted = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            showUploadProgress(percentageCompleted);
+          }
+        },
+        onDownloadProgress: function (progressEvent) {
+          if (showDownloadProgress) {
+            let percentageCompleted = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            showDownloadProgress(percentageCompleted);
+          }
+        },
+      });
+
+      return processResponse(response);
+    } catch (error) {
+      console.error("An error occurred:", error);
+      throw error;
+    }
+  };
 }
 
 export { API };
-//https://cdn.pixabay.com/photo/2012/05/07/18/57/blog-49006_960_720.png

@@ -4,9 +4,8 @@ import cors from "cors";
 import bodyParser from "body-parser";
 
 //components
-import Connection from "./database/db";
+import Connection from "./databse/db.js";
 import Router from "./routes/route.js";
-import { connection } from "mongoose";
 
 dotenv.config();
 
@@ -21,7 +20,7 @@ const PORT = 8000;
 const username = process.env.DB_USERNAME;
 const password = process.env.DB_PASSWORD;
 
-connection(username, password)
+Connection(username, password)
   .then(() => {
     app.listen(PORT, () =>
       console.log(`Server is running successfully on PORT ${PORT}`)
