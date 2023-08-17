@@ -1,14 +1,14 @@
-const mongoose = require("mongoose");
-const colors = require("colors");
+import mongoose from "mongoose";
 
-const connectDb = async () => {
+const Connection = async () => {
+  const URL =
+    "mongodb+srv://ajay3008:AJAYSINGH@blog-website.ndfvfgj.mongodb.net/blog-website?retryWrites=true&w=majority";
   try {
-    await mongoose.connect(process.env.MONGO_URL);
-    console.log(
-      `connect to mongoose database ${mongoose.connection.host}`.bgGreen.white
-    );
+    await mongoose.connect(URL, { useNewUrlParser: true });
+    console.log("Database connected successfully");
   } catch (error) {
-    console.log(`mongoDb Database Error ${error}`.bgRed.white);
+    console.log("Error while connecting to the database ", error);
   }
 };
-module.exports = connectDb;
+
+export default Connection;

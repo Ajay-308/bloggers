@@ -4,8 +4,9 @@ import cors from "cors";
 import bodyParser from "body-parser";
 
 //components
-import Connection from "./database/db.js";
+import Connection from "./database/db";
 import Router from "./routes/route.js";
+import { connection } from "mongoose";
 
 dotenv.config();
 
@@ -20,14 +21,13 @@ const PORT = 8000;
 const username = process.env.DB_USERNAME;
 const password = process.env.DB_PASSWORD;
 
-// Connection(username, password);
-Connection(username, password)
+connection(username, password)
   .then(() => {
     app.listen(PORT, () =>
       console.log(`Server is running successfully on PORT ${PORT}`)
     );
   })
+
   .catch((err) => {
     console.error("Error connecting to the database:", err.message);
-    // You might want to handle the error further (e.g., retrying, graceful shutdown, etc.)
   });
