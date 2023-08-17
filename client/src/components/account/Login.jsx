@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
+import axios from "axios";
 
 import { TextField, Box, Button, Typography, styled } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
@@ -95,20 +96,33 @@ const Login = ({ isUserAuthenticated }) => {
    }
 
    const loginUser = async () => {
-      let response = await API.userLogin(login);
-      if (response.isSuccess) {
-         showError('');
+      // let response = await API.userLogin(login);
+      let data = JSON.stringify(login);
+      let config = {
+         method: 'post',
+         maxBodyLength: Infinity,
+         url: 'http://localhost:5000/login',
+         headers: {
+            'Content-Type': 'application/json'
+         },
+         data: data
+      };
+      axios.request(config)
+         .then((response) => {
+            showError('');
 
-         sessionStorage.setItem('accessToken', `Bearer ${response.data.accessToken}`);
-         sessionStorage.setItem('refreshToken', `Bearer ${response.data.refreshToken}`);
-         setAccount({ name: response.data.name, username: response.data.username });
+            sessionStorage.setItem('accessToken', `Bearer ${response.data.accessToken}`);
+            sessionStorage.setItem('refreshToken', `Bearer ${response.data.refreshToken}`);
+            setAccount({ name: response.data.name, username: response.data.username });
 
-         isUserAuthenticated(true)
-         setLogin(loginInitialValues);
-         navigate('/');
-      } else {
-         showError('Something went wrong! please try again later');
-      }
+            isUserAuthenticated(true)
+            setLogin(loginInitialValues);
+            navigate('/');
+
+         })
+         .catch((error) => {
+            showError('Something went wrong! please try again later');
+         });
    }
 
    const signupUser = async () => {

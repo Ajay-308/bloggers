@@ -2,7 +2,7 @@
 import axios from "axios";
 import { API_NOTIFICATIONS_MESSAGES, SERVICE_URL } from "../constants/config";
 
-const API_URL = "http://localhost:9000"; //my backend running on this port
+const API_URL = "http://localhost:5000"; //my backend running on this port
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
