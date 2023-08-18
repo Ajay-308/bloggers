@@ -13,12 +13,14 @@ conn.once("open", () => {
   gfs.collection("fs");
 });
 
-export const uploadImage = (request, response) => {
-  if (!request.file) return response.status(404).json("File not found");
+export const uploadImage = (req, res) => {
+  if (!req.file) {
+    return res.status(404).json({ msg: "File not found" });
+  }
 
-  const imageUrl = `${url}/file/${request.file.filename}`;
+  const imageUrl = `${url}/file/${req.file.filename}`;
 
-  response.status(200).json(imageUrl);
+  return res.status(200).json(imageUrl);
 };
 
 export const getImage = async (request, response) => {
@@ -26,6 +28,9 @@ export const getImage = async (request, response) => {
     const file = await gfs.files.findOne({ filename: request.params.filename });
     // const readStream = gfs.createReadStream(file.filename);
     // readStream.pipe(response);
+    if (!file) {
+      return response.status(404).json({ msg: "File not found" });
+    }
     const readStream = gridfsBucket.openDownloadStream(file._id);
     readStream.pipe(response);
   } catch (error) {
