@@ -28,23 +28,12 @@ const About = () => {
             <Banner />
             <Wrapper>
                 <Typography variant="h3">AJAY SINGH</Typography>
-                <Text variant="h5">I'm second year student of Arificial intelligence and data sceince, knowledge about MERN stack and Machine Learning<br />
+                <Text variant="h5">
+                    I'm a third-year student specializing in Artificial Intelligence and Data Science. I possess proficiency in the MERN (MongoDB, Express.js, React, Node.js) stack for web development and have a solid foundation in Machine Learning concepts and techniques.<br />
 
                     <Box component="span" style={{ marginLeft: 5 }}>
                         <Link href="https://github.com/Ajay-308" color="inherit" target="_blank"><GitHub /></Link>
                     </Box>
-                </Text>
-                <Text variant="h5">
-                    Need something built or simply want to have chat? Reach out to me on
-                    <Box component="span" style={{ marginLeft: 5 }}>
-                        <Link href="https://www.linkedin.com/in/ajay-b94a13233/" color="inherit" target="_blank">
-                            <LinkedIn />
-                        </Link>
-                    </Box>
-                    or send me an Email
-                    <Link href="mailto:ajay3008rock@gmail.com?Subject=This is a subject" target="_blank" color="inherit">
-                        <Email />
-                    </Link>.
                 </Text>
             </Wrapper>
         </Box>
