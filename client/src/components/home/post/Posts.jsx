@@ -4,9 +4,6 @@ import { Grid, Box } from '@mui/material';
 import { Link, useSearchParams } from 'react-router-dom';
 import axios from "axios"
 
-// import { getAllPosts } from '../../../service/api';
-import { API } from '../../../service/api';
-
 //components
 import Post from './Post';
 

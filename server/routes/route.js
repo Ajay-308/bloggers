@@ -29,12 +29,12 @@ const router = express.Router();
 
 router.post("/login", loginUser);
 router.post("/signup", singupUser);
-router.post("/logout", logoutUser);
+router.post("/logout", logoutUser); //till here done
 
-router.post("/token", createNewToken);
+router.post("/token", createNewToken); //this also done
 
 router.post("/create", authenticateToken, createPost);
-router.put("/update/:id", authenticateToken, updatePost);
+router.put("/update/:id", authenticateToken, updatePost); //update done
 router.delete("/delete/:id", authenticateToken, deletePost);
 
 router.get("/post/:id", authenticateToken, getPost);

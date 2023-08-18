@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, styled, TextareaAutosize, Button, FormControl, InputBase } from '@mui/material';
 import { AddCircle as Add } from '@mui/icons-material';
 import { useNavigate, useParams } from 'react-router-dom';
+import axios from "axios"
 
 import { API } from '../../service/api';
 
@@ -89,7 +90,25 @@ const Update = () => {
     }, [file])
 
     const updateBlogPost = async () => {
-        await API.updatePost(post);
+        let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:5000/update',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': sessionStorage.getItem('accessToken'),
+            },
+            data: post
+        };
+        axios.request(config)
+            .then((response) => {
+                console.log(JSON.stringify(response.data));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        // await API.updatePost(post);
         navigate(`/details/${id}`);
     }
 

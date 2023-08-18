@@ -5,6 +5,7 @@ import { Delete, Edit } from '@mui/icons-material';
 import { Link, useNavigate, useParams } from 'react-router-dom'
 
 // import { API } from '../../service/api';
+import axios from "axios"
 import { API } from '../../service/api'
 
 import { DataContext } from '../../context/DataProvider';
@@ -66,13 +67,31 @@ const DetailView = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            let response = await API.getPostById(id);
-            if (response.isSuccess) {
-                setPost(response.data);
-            }
+            // let response = await API.getPostById(id);
+            let config = {
+                method: 'get',
+                maxBodyLength: Infinity,
+                url: 'http://localhost:5000/posts',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': sessionStorage.getItem('accessToken'),
+                },
+            };
+            axios.request(config)
+                .then((response) => {
+                    setPost(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
         fetchData();
-    }, []);
+        //     if (response.isSuccess) {
+        //         s
+        //     }
+        // }
+        //     fetchData();
+    }, [id]);
 
     const deleteBlog = async () => {
         await API.deletePost(post._id);
