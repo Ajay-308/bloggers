@@ -27,10 +27,6 @@ export const getImage = async (request, response) => {
   try {
     const file = await gfs.files.findOne({ filename: request.params.filename });
     // const readStream = gfs.createReadStream(file.filename);
-    // readStream.pipe(response);
-    if (!file) {
-      return response.status(404).json({ msg: "File not found" });
-    }
     const readStream = gridfsBucket.openDownloadStream(file._id);
     readStream.pipe(response);
   } catch (error) {

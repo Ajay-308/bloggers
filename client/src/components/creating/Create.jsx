@@ -4,6 +4,8 @@ import { styled, Box, TextareaAutosize, Button, InputBase, FormControl } from '@
 import { AddCircle as Add } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
+import axios from "axios"
+
 import { API } from '../../service/api';
 import { DataContext } from '../../context/DataProvider';
 
@@ -78,7 +80,26 @@ const CreatePost = () => {
     }, [file])
 
     const savePost = async () => {
-        await API.createPost(post);
+        let config = {
+            method: 'post',
+            maxBodyLength: Infinity,
+            url: 'http://localhost:5000/create',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': sessionStorage.getItem('accessToken'),
+            },
+            data: post
+        };
+        axios.request(config)
+            .then((response) => {
+                console.log(JSON.stringify(response.data));
+            })
+            .catch((error) => {
+                console.log(error);
+            });
+
+        // await API.createPost(post);
+
         navigate('/');
     }
 

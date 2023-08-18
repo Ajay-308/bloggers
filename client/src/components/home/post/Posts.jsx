@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 
 import { Grid, Box } from '@mui/material';
 import { Link, useSearchParams } from 'react-router-dom';
+import axios from "axios"
 
 // import { getAllPosts } from '../../../service/api';
 import { API } from '../../../service/api';
@@ -17,10 +18,23 @@ const Posts = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            let response = await API.getAllPosts({ category: category || '' });
-            if (response.isSuccess) {
-                getPosts(response.data);
-            }
+            // let response = await API.getAllPosts({ category: category || '' });
+            let config = {
+                method: 'get',
+                maxBodyLength: Infinity,
+                url: 'http://localhost:5000/posts',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': sessionStorage.getItem('accessToken'),
+                },
+            };
+            axios.request(config)
+                .then((response) => {
+                    getPosts(response.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                });
         }
         fetchData();
     }, [category]);
