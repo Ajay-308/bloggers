@@ -126,16 +126,30 @@ const Login = ({ isUserAuthenticated }) => {
    }
 
    const signupUser = async () => {
-      let response = await API.userSignup(signup);
-      if (response.isSuccess) {
-         showError('');
-         setSignup(signupInitialValues);
-         toggleAccount('login');
-         // window.alert('Signup successful! You can now log in.');
-      } else {
-         showError('Something went wrong! please try again later');
-      }
-   }
+      let data = JSON.stringify(signup); // Assuming `signup` contains user signup data
+      let config = {
+         method: 'post',
+         maxBodyLength: Infinity,
+         url: 'http://localhost:5000/signup', // Change this to your signup endpoint
+         headers: {
+            'Content-Type': 'application/json'
+         },
+         data: data
+      };
+      axios.request(config)
+         .then(() => {
+            console.log(data)
+            showError('');
+            setSignup(signupInitialValues);
+            toggleAccount('login');
+            window.alert('Signup successful! You can now log in.');
+
+         }).catch((error) => {
+            console.error(error);
+            showError('An error occurred while signing up. Please try again.');
+         })
+   };
+
 
    const toggleSignup = () => {
       account === 'signup' ? toggleAccount('login') : toggleAccount('signup');
