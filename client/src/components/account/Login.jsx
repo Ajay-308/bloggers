@@ -131,6 +131,7 @@ const Login = ({ isUserAuthenticated }) => {
          showError('');
          setSignup(signupInitialValues);
          toggleAccount('login');
+         // window.alert('Signup successful! You can now log in.');
       } else {
          showError('Something went wrong! please try again later');
       }
