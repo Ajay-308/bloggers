@@ -1,8 +1,14 @@
-//various method to make api but we use axios we use api intercepter
 import axios from "axios";
-import { API_NOTIFICATIONS_MESSAGES, SERVICE_URL } from "../constants/config";
 
-const API_URL = "http://localhost:5000"; //my backend running on this port
+import { API_NOTIFICATION_MESSAGES, SERVICE_URLS } from "../constants/config";
+import {
+  getAccessToken,
+  getRefreshToken,
+  setAccessToken,
+  getType,
+} from "../utils/common-utils";
+
+const API_URL = "http://localhost:5000";
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
@@ -14,6 +20,11 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   function (config) {
+    if (config.TYPE.params) {
+      config.params = config.TYPE.params;
+    } else if (config.TYPE.query) {
+      config.url = config.url + "/" + config.TYPE.query;
+    }
     return config;
   },
   function (error) {
@@ -23,14 +34,19 @@ axiosInstance.interceptors.request.use(
 
 axiosInstance.interceptors.response.use(
   function (response) {
-    //stop loader here
+    // Stop global loader here
     return processResponse(response);
   },
   function (error) {
-    //stop globel loader here
-    return Promise.reject(processError(error));
+    // Stop global loader here
+    return Promise.reject(ProcessError(error));
   }
 );
+
+///////////////////////////////
+// If success -> returns { isSuccess: true, data: object }
+// If fail -> returns { isFailure: true, status: string, msg: string, code: int }
+//////////////////////////////
 const processResponse = (response) => {
   if (response?.status === 200) {
     return { isSuccess: true, data: response.data };
@@ -43,69 +59,93 @@ const processResponse = (response) => {
     };
   }
 };
-const processError = (error) => {
+
+///////////////////////////////
+// If success -> returns { isSuccess: true, data: object }
+// If fail -> returns { isError: true, status: string, msg: string, code: int }
+//////////////////////////////
+const ProcessError = async (error) => {
   if (error.response) {
-    //request made and server responsed with other status
-    //that fall out of range around 2.a,b something
-    console.log("ERROR IN RESPONSE ", error.toJSON());
-    return {
-      isError: true,
-      msg: API_NOTIFICATIONS_MESSAGES.responseFailure,
-      code: error.response.status,
-    };
+    // Request made and server responded with a status code
+    // that falls out of the range of 2xx
+    if (error.response?.status === 403) {
+      // const { url, config } = error.response;
+      // console.log(error);
+      // try {
+      //     let response = await API.getRefreshToken({ token: getRefreshToken() });
+      //     if (response.isSuccess) {
+      sessionStorage.clear();
+      //         setAccessToken(response.data.accessToken);
+
+      //         const requestData = error.toJSON();
+
+      //         let response1 = await axios({
+      //             method: requestData.config.method,
+      //             url: requestData.config.baseURL + requestData.config.url,
+      //             headers: { "content-type": "application/json", "authorization": getAccessToken() },
+      //             params: requestData.config.params
+      //         });
+      //     }
+      // } catch (error) {
+      //     return Promise.reject(error)
+      // }
+    } else {
+      console.log("ERROR IN RESPONSE: ", error.toJSON());
+      return {
+        isError: true,
+        msg: API_NOTIFICATION_MESSAGES.responseFailure,
+        code: error.response.status,
+      };
+    }
   } else if (error.request) {
-    //request made no response
-    console.log("ERROR IN REQUEST ", error.toJSON());
+    // The request was made but no response was received
+    console.log("ERROR IN RESPONSE: ", error.toJSON());
     return {
       isError: true,
-      msg: API_NOTIFICATIONS_MESSAGES.responseFailure,
+      msg: API_NOTIFICATION_MESSAGES.requestFailure,
       code: "",
     };
   } else {
-    //something happend with setting up
-
-    console.log("ERROR IN NETWORK ", error.toJSON());
+    // Something happened in setting up the request that triggered an Error
+    console.log("ERROR IN RESPONSE: ", error.toJSON());
     return {
       isError: true,
-      msg: API_NOTIFICATIONS_MESSAGES.networkError,
+      msg: API_NOTIFICATION_MESSAGES.networkError,
       code: "",
     };
   }
 };
 
 const API = {};
-for (const [key, value] of Object.entries(SERVICE_URL)) {
-  API[key] = async (body, showUploadProgress, showDownloadProgress) => {
-    try {
-      const response = await axiosInstance({
-        method: value.method,
-        url: value.url,
-        data: body,
-        responseType: value.responseType,
-        onUploadProgress: function (progressEvent) {
-          if (showUploadProgress) {
-            let percentageCompleted = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total
-            );
-            showUploadProgress(percentageCompleted);
-          }
-        },
-        onDownloadProgress: function (progressEvent) {
-          if (showDownloadProgress) {
-            let percentageCompleted = Math.round(
-              (progressEvent.loaded * 100) / progressEvent.total
-            );
-            showDownloadProgress(percentageCompleted);
-          }
-        },
-      });
 
-      return processResponse(response);
-    } catch (error) {
-      console.error("An error occurred:", error);
-      throw error;
-    }
-  };
+for (const [key, value] of Object.entries(SERVICE_URLS)) {
+  API[key] = (body, showUploadProgress, showDownloadProgress) =>
+    axiosInstance({
+      method: value.method,
+      url: value.url,
+      data: value.method === "DELETE" ? "" : body,
+      responseType: value.responseType,
+      headers: {
+        authorization: getAccessToken(),
+      },
+      TYPE: getType(value, body),
+      onUploadProgress: function (progressEvent) {
+        if (showUploadProgress) {
+          let percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          showUploadProgress(percentCompleted);
+        }
+      },
+      onDownloadProgress: function (progressEvent) {
+        if (showDownloadProgress) {
+          let percentCompleted = Math.round(
+            (progressEvent.loaded * 100) / progressEvent.total
+          );
+          showDownloadProgress(percentCompleted);
+        }
+      },
+    });
 }
 
 export { API };

@@ -1,9 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
-import axios from "axios";
 
 import { TextField, Box, Button, Typography, styled } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+
+import { API } from '../../service/api';
 import { DataContext } from '../../context/DataProvider';
+import swal from 'sweetalert';
 
 const Component = styled(Box)`
     width: 400px;
@@ -12,10 +14,10 @@ const Component = styled(Box)`
 `;
 
 const Image = styled('img')({
-   width: 100,
-   display: 'flex',
-   margin: 'auto',
-   padding: '50px 0 0'
+    width: 100,
+    display: 'flex',
+    margin: 'auto',
+    padding: '50px 0 0'
 });
 
 const Wrapper = styled(Box)`
@@ -60,53 +62,42 @@ const Error = styled(Typography)`
 `
 
 const loginInitialValues = {
-   username: '',
-   password: ''
+    username: '',
+    password: ''
 };
 
 const signupInitialValues = {
-   name: '',
-   username: '',
-   password: '',
+    name: '',
+    username: '',
+    password: '',
 };
 
 const Login = ({ isUserAuthenticated }) => {
-   const [login, setLogin] = useState(loginInitialValues);
-   const [signup, setSignup] = useState(signupInitialValues);
-   const [error, showError] = useState('');
-   const [account, toggleAccount] = useState('login');
+    const [login, setLogin] = useState(loginInitialValues);
+    const [signup, setSignup] = useState(signupInitialValues);
+    const [error, showError] = useState('');
+    const [account, toggleAccount] = useState('login');
 
-   const navigate = useNavigate();
-   const { setAccount } = useContext(DataContext);
+    const navigate = useNavigate();
+    const { setAccount } = useContext(DataContext);
 
-   const imageURL = 'https://www.sesta.it/wp-content/uploads/2021/03/logo-blog-sesta-trasparente.png';
+    const imageURL = 'https://www.sesta.it/wp-content/uploads/2021/03/logo-blog-sesta-trasparente.png';
 
-   useEffect(() => {
-      showError(false);
-   }, [login])
+    useEffect(() => {
+        showError(false);
+    }, [login])
 
-   const onValueChange = (e) => {
-      setLogin({ ...login, [e.target.name]: e.target.value });
-   }
+    const onValueChange = (e) => {
+        setLogin({ ...login, [e.target.name]: e.target.value });
+    }
 
-   const onInputChange = (e) => {
-      setSignup({ ...signup, [e.target.name]: e.target.value });
-   }
+    const onInputChange = (e) => {
+        setSignup({ ...signup, [e.target.name]: e.target.value });
+    }
 
-   const loginUser = async () => {
-      // let response = await API.userLogin(login);
-      let data = JSON.stringify(login);
-      let config = {
-         method: 'post',
-         maxBodyLength: Infinity,
-         url: 'http://localhost:5000/login',
-         headers: {
-            'Content-Type': 'application/json'
-         },
-         data: data
-      };
-      axios.request(config)
-         .then((response) => {
+    const loginUser = async () => {
+        let response = await API.userLogin(login);
+        if (response.isSuccess) {
             showError('');
 
             sessionStorage.setItem('accessToken', `Bearer ${response.data.accessToken}`);
@@ -116,71 +107,56 @@ const Login = ({ isUserAuthenticated }) => {
             isUserAuthenticated(true)
             setLogin(loginInitialValues);
             navigate('/');
-
-         })
-         .catch((error) => {
+        } else {
             showError('Something went wrong! please try again later');
-         });
-   }
+        }
+    }
 
-   const signupUser = async () => {
-      let data = JSON.stringify(signup); // Assuming `signup` contains user signup data
-      let config = {
-         method: 'post',
-         maxBodyLength: Infinity,
-         url: 'http://localhost:5000/signup', // Change this to your signup endpoint
-         headers: {
-            'Content-Type': 'application/json'
-         },
-         data: data
-      };
-      axios.request(config)
-         .then(() => {
+    const signupUser = async () => {
+        let response = await API.userSignup(signup);
+        if (response.isSuccess) {
             showError('');
             setSignup(signupInitialValues);
             toggleAccount('login');
-            window.alert('Signup successful! You can now log in.');
+            swal("good job!", 'Signup successful! You can now log in.', "success");
+        } else {
+            showError('Something went wrong! please try again later');
+        }
+    }
 
-         }).catch((error) => {
-            console.error(error);
-            showError('An error occurred while signing up. Please try again.');
-         })
-   };
+    const toggleSignup = () => {
+        account === 'signup' ? toggleAccount('login') : toggleAccount('signup');
+    }
 
+    return (
+        <Component>
+            <Box>
+                <Image src={imageURL} alt="blog" />
+                {
+                    account === 'login' ?
+                        <Wrapper>
+                            <TextField variant="standard" value={login.username} onChange={(e) => onValueChange(e)} name='username' label='Enter Username' />
+                            <TextField variant="standard" value={login.password} onChange={(e) => onValueChange(e)} name='password' label='Enter Password' />
 
-   const toggleSignup = () => {
-      account === 'signup' ? toggleAccount('login') : toggleAccount('signup');
-   }
+                            {error && <Error>{error}</Error>}
 
-   return (
-      <Component>
-         <Box>
-            <Image src={imageURL} alt="blog" />
-            {
-               account === 'login' ?
-                  <Wrapper>
-                     <TextField variant="standard" value={login.username} onChange={(e) => onValueChange(e)} name='username' label='Enter Username' />
-                     <TextField variant="standard" value={login.password} onChange={(e) => onValueChange(e)} name='password' label='Enter Password' />
+                            <LoginButton variant="contained" onClick={() => loginUser()} >Login</LoginButton>
+                            <Text style={{ textAlign: 'center' }}>OR</Text>
+                            <SignupButton onClick={() => toggleSignup()} style={{ marginBottom: 50 }}>Create an account</SignupButton>
+                        </Wrapper> :
+                        <Wrapper>
+                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name='name' label='Enter Name' />
+                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name='username' label='Enter Username' />
+                            <TextField variant="standard" onChange={(e) => onInputChange(e)} name='password' label='Enter Password' />
 
-                     {error && <Error>{error}</Error>}
-
-                     <LoginButton variant="contained" onClick={() => loginUser()} >Login</LoginButton>
-                     <Text style={{ textAlign: 'center' }}>OR</Text>
-                     <SignupButton onClick={() => toggleSignup()} style={{ marginBottom: 50 }}>Create an account</SignupButton>
-                  </Wrapper> :
-                  <Wrapper>
-                     <TextField variant="standard" onChange={(e) => onInputChange(e)} name='name' label='Enter Name' />
-                     <TextField variant="standard" onChange={(e) => onInputChange(e)} name='username' label='Enter Username' />
-                     <TextField variant="standard" onChange={(e) => onInputChange(e)} name='password' label='Enter Password' />
-
-                     <SignupButton onClick={() => signupUser()} >Signup</SignupButton>
-                     <Text style={{ textAlign: 'center' }}>OR</Text>
-                     <LoginButton variant="contained" onClick={() => toggleSignup()}>Already have an account</LoginButton>
-                  </Wrapper>
-            }
-         </Box>
-      </Component>
-   )
+                            <SignupButton onClick={() => signupUser()} >Signup</SignupButton>
+                            <Text style={{ textAlign: 'center' }}>OR</Text>
+                            <LoginButton variant="contained" onClick={() => toggleSignup()}>Already have an account</LoginButton>
+                        </Wrapper>
+                }
+            </Box>
+        </Component>
+    )
 }
 
 export default Login;

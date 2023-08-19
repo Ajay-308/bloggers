@@ -13,10 +13,10 @@ import {
 import DataProvider from "./context/DataProvider";
 import Header from "./components/header/Header";
 import Home from "./components/home/Home";
-import CreatePost from "./components/creating/Create";
+import CreatePost from "./components/create/CreatePost";
 import DetailView from "./components/details/DetailView";
-import Update from "./components/creating/update.jsx";
-import About from "./components/about/about";
+import Update from "./components/create/Update";
+import About from "./components/about/About";
 import Contact from "./components/contact/Contact";
 import Login from "./components/account/Login";
 

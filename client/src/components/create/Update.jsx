@@ -3,7 +3,6 @@ import React, { useState, useEffect } from 'react';
 import { Box, styled, TextareaAutosize, Button, FormControl, InputBase } from '@mui/material';
 import { AddCircle as Add } from '@mui/icons-material';
 import { useNavigate, useParams } from 'react-router-dom';
-import axios from "axios"
 
 import { API } from '../../service/api';
 
@@ -46,7 +45,7 @@ const initialPost = {
     title: '',
     description: '',
     picture: '',
-    username: 'AJAYcoder',
+    username: 'codeforinterview',
     categories: 'Tech',
     createdDate: new Date()
 }
@@ -74,41 +73,30 @@ const Update = () => {
 
     useEffect(() => {
         const getImage = async () => {
-            if (file) {
-                const data = new FormData();
-                data.append("name", file.name);
-                data.append("file", file);
+            try {
+                if (file) {
+                    const data = new FormData();
+                    data.append("name", file.name);
+                    data.append("file", file);
 
-                const response = await API.uploadFile(data);
-                if (response.isSuccess) {
-                    post.picture = response.data;
-                    setImageURL(response.data);
+                    const response = await API.uploadFile(data);
+                    if (response.isSuccess) {
+                        post.picture = response.data;
+                        setImageURL(response.data);
+                    }
                 }
+            } catch (error) {
+                console.error("An error occurred while uploading the image:", error);
+                // You can add additional error handling here if needed
             }
-        }
+        };
+
         getImage();
-    }, [file])
+    }, [file]);
+
 
     const updateBlogPost = async () => {
-        let config = {
-            method: 'post',
-            maxBodyLength: Infinity,
-            url: 'http://localhost:5000/update',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': sessionStorage.getItem('accessToken'),
-            },
-            data: post
-        };
-        axios.request(config)
-            .then((response) => {
-                console.log(JSON.stringify(response.data));
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-
-        // await API.updatePost(post);
+        await API.updatePost(post);
         navigate(`/details/${id}`);
     }
 

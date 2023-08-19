@@ -1,10 +1,9 @@
 import { useState, useEffect, useContext } from 'react';
 import { Box, TextareaAutosize, Button, styled } from '@mui/material';
 
-import { DataContext } from '../../context/DataProvider';
+import { DataContext } from '../../../context/DataProvider';
 
-// import {  } from '../../service/api';'
-import { API } from '../../service/api'
+import { API } from '../../../service/api';
 
 //components
 import Comment from './Comment';
@@ -44,13 +43,20 @@ const Comments = ({ post }) => {
 
     useEffect(() => {
         const getData = async () => {
-            const response = await API.getAllComments(post._id);
-            if (response.isSuccess) {
-                setComments(response.data);
+            try {
+                const response = await API.getAllComments(post._id);
+                if (response.isSuccess) {
+                    setComments(response.data);
+                }
+            } catch (error) {
+                console.error("An error occurred while fetching comments:", error);
+                // You can add additional error handling here if needed
             }
-        }
+        };
+
         getData();
     }, [toggle, post]);
+
 
     const handleChange = (e) => {
         setComment({
