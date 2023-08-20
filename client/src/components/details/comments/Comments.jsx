@@ -50,7 +50,7 @@ const Comments = ({ post }) => {
                     setComments(response.data);
                 }
             } catch (error) {
-                console.error("An error occurred while fetching comments:", error);
+                // console.error("An error occurred while fetching comments:", error);
                 // You can add additional error handling here if needed
             }
         };

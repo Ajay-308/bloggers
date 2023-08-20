@@ -90,7 +90,7 @@ const ProcessError = async (error) => {
       //     return Promise.reject(error)
       // }
     } else {
-      console.log("ERROR IN RESPONSE: ", error.toJSON());
+      //console.log("ERROR IN RESPONSE: ", error.toJSON());
       return {
         isError: true,
         msg: API_NOTIFICATION_MESSAGES.responseFailure,
@@ -99,7 +99,7 @@ const ProcessError = async (error) => {
     }
   } else if (error.request) {
     // The request was made but no response was received
-    console.log("ERROR IN RESPONSE: ", error.toJSON());
+    // console.log("ERROR IN RESPONSE: ", error.toJSON());
     return {
       isError: true,
       msg: API_NOTIFICATION_MESSAGES.requestFailure,
@@ -107,7 +107,7 @@ const ProcessError = async (error) => {
     };
   } else {
     // Something happened in setting up the request that triggered an Error
-    console.log("ERROR IN RESPONSE: ", error.toJSON());
+    //console.log("ERROR IN RESPONSE: ", error.toJSON());
     return {
       isError: true,
       msg: API_NOTIFICATION_MESSAGES.networkError,
