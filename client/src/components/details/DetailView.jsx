@@ -7,6 +7,8 @@ import { Link, useNavigate, useParams } from 'react-router-dom'
 import { API } from '../../service/api';
 
 import { DataContext } from '../../context/DataProvider';
+import axios from "axios"
+import swal from 'sweetalert';
 
 // components
 import Comments from './comments/Comments';
@@ -73,17 +75,52 @@ const DetailView = () => {
         fetchData();
     }, []);
 
+    // const deleteBlog = async () => {
+    //     try {
+    //         await API.deletePost(post._id);
+    //         navigate('/');
+    //     } catch (error) {
+    //         console.error("An error occurred while deleting the blog post:", error);
+    //         // You can add additional error handling here if needed
+    //     }
+    // };
+    // const deleteBlog = async () => {
+    //     try {
+    //         // await Api.deletePost()
+    //         const { data } = await axios.delete(`http://localhost:5000/delete/${post._id}`);
+
+    //         navigate('/');
+    //         if (data?.success) {
+    //             alert("Blog Deleted");
+    //             window.location.reload();
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
     const deleteBlog = async () => {
-        try {
-            await API.deletePost(post._id);
-            navigate('/');
-        } catch (error) {
-            console.error("An error occurred while deleting the blog post:", error);
-            // You can add additional error handling here if needed
-        }
-    };
+        let config = {
+            method: 'delete',
+            maxBodyLength: Infinity,
+            url: `http://localhost:5000/delete/${post._id}`,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': sessionStorage.getItem('accessToken'),
+            },
+        };
+
+        axios.request(config)
+            .then((response) => {
+                console.log(JSON.stringify(response.data));
+                swal("good job!", 'Post Deleted SuccessFully', "success");
+                navigate('/')
+            })
+            .catch((error) => {
+                console.log(error);
+            });
 
 
+    }
     return (
         <Container>
             <Image src={post.picture || url} alt="post" />

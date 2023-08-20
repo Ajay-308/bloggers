@@ -27,15 +27,22 @@ export const updatePost = async (request, response) => {
   }
 };
 
-export const deletePost = async (request, response) => {
+export const deletePost = async (req, res) => {
   try {
-    const post = await Post.findById(request.params.id);
+    await Post.findByIdAndDelete(req.params.id);
+    // await post.deleteOne(); // Use deleteOne() or remove()
 
-    await post.delete();
-
-    response.status(200).json("post deleted successfully");
+    return res.status(200).send({
+      success: true,
+      message: "Blog Deleted!",
+    });
   } catch (error) {
-    response.status(500).json(error);
+    console.log(error);
+    return res.status(400).send({
+      success: false,
+      message: "Error while Deleting Post",
+      error,
+    });
   }
 };
 
