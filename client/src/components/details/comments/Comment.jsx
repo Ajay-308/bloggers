@@ -37,9 +37,15 @@ const Comment = ({ comment, setToggle }) => {
     const { account } = useContext(DataContext)
 
     const removeComment = async () => {
-        await API.deleteComment(comment._id);
-        setToggle(prev => !prev);
+        try {
+            await API.deleteComment(comment._id);
+            setToggle(prev => !prev);
+        } catch (error) {
+            // Handle the error here
+            console.error("An error occurred while deleting the comment:", error);
+        }
     }
+
 
     return (
         <Component>

@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 
-import { styled, Box, TextareaAutosize, Button, InputBase, FormControl  } from '@mui/material';
+import { styled, Box, TextareaAutosize, Button, InputBase, FormControl } from '@mui/material';
 import { AddCircle as Add } from '@mui/icons-material';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 import { API } from '../../service/api';
 import { DataContext } from '../../context/DataProvider';
+import swal from 'sweetalert';
 
 const Container = styled(Box)(({ theme }) => ({
     margin: '50px 100px',
@@ -60,14 +61,14 @@ const CreatePost = () => {
     const { account } = useContext(DataContext);
 
     const url = post.picture ? post.picture : 'https://images.unsplash.com/photo-1543128639-4cb7e6eeef1b?ixid=MnwxMjA3fDB8MHxzZWFyY2h8Mnx8bGFwdG9wJTIwc2V0dXB8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80';
-    
+
     useEffect(() => {
-        const getImage = async () => { 
-            if(file) {
+        const getImage = async () => {
+            if (file) {
                 const data = new FormData();
                 data.append("name", file.name);
                 data.append("file", file);
-                
+
                 const response = await API.uploadFile(data);
                 post.picture = response.data;
             }
@@ -78,6 +79,7 @@ const CreatePost = () => {
     }, [file])
 
     const savePost = async () => {
+        swal("good job!", 'post created successfully', "success");
         await API.createPost(post);
         navigate('/');
     }
@@ -108,7 +110,7 @@ const CreatePost = () => {
                 rowsMin={5}
                 placeholder="Tell your story..."
                 name='description'
-                onChange={(e) => handleChange(e)} 
+                onChange={(e) => handleChange(e)}
             />
         </Container>
     )

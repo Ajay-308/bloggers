@@ -126,7 +126,7 @@ for (const [key, value] of Object.entries(SERVICE_URLS)) {
       data: value.method === "DELETE" ? "" : body,
       responseType: value.responseType,
       headers: {
-        authorization: getAccessToken(),
+        Authorization: getAccessToken(),
       },
       TYPE: getType(value, body),
       onUploadProgress: function (progressEvent) {

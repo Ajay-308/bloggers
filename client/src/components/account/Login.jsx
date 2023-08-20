@@ -14,7 +14,7 @@ const Component = styled(Box)`
 `;
 
 const Image = styled('img')({
-    width: 100,
+    width: 150,
     display: 'flex',
     margin: 'auto',
     padding: '50px 0 0'
@@ -33,7 +33,7 @@ const Wrapper = styled(Box)`
 
 const LoginButton = styled(Button)`
     text-transform: none;
-    background: #FB641B;
+    background:  #006400;
     color: #fff;
     height: 48px;
     border-radius: 2px;
@@ -81,7 +81,7 @@ const Login = ({ isUserAuthenticated }) => {
     const navigate = useNavigate();
     const { setAccount } = useContext(DataContext);
 
-    const imageURL = 'https://www.sesta.it/wp-content/uploads/2021/03/logo-blog-sesta-trasparente.png';
+    const imageURL = 'https://thumbs.dreamstime.com/b/blog-word-made-plastic-board-game-tiles-114309218.jpg';
 
     useEffect(() => {
         showError(false);
