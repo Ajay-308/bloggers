@@ -21,13 +21,20 @@ export const getComments = async (request, response) => {
   }
 };
 
-export const deleteComment = async (request, response) => {
+export const deleteComment = async (req, res) => {
   try {
-    const comment = await Comment.findById(request.params.id);
-    await comment.delete();
+    await Comment.findByIdAndDelete(req.params.id);
 
-    response.status(200).json("comment deleted successfully");
+    return res.status(200).send({
+      success: true,
+      message: "comments deleted!",
+    });
   } catch (error) {
-    response.status(500).json(error);
+    console.log(error);
+    return res.status(400).send({
+      success: false,
+      message: "Error while Deleting Post",
+      error,
+    });
   }
 };
