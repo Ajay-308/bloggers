@@ -7,6 +7,7 @@ import { API } from '../../../service/api';
 
 //components
 import Comment from './Comment';
+import swal from 'sweetalert';
 
 const Container = styled(Box)`
     margin-top: 100px;
@@ -70,6 +71,7 @@ const Comments = ({ post }) => {
     const addComment = async () => {
         await API.newComment(comment);
         setComment(initialValue)
+        swal("good job!", 'Comment posted SuccessFully', "success");
         setToggle(prev => !prev);
     }
 

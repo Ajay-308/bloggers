@@ -5,6 +5,8 @@ import { Delete } from '@mui/icons-material';
 
 import { API } from '../../../service/api';
 import { DataContext } from "../../../context/DataProvider";
+import axios from "axios"
+import swal from 'sweetalert';
 
 const Component = styled(Box)`
     margin-top: 30px;
@@ -37,13 +39,33 @@ const Comment = ({ comment, setToggle }) => {
     const { account } = useContext(DataContext)
 
     const removeComment = async () => {
-        try {
-            await API.deleteComment(comment._id);
-            setToggle(prev => !prev);
-        } catch (error) {
-            // Handle the error here
-            console.error("An error occurred while deleting the comment:", error);
-        }
+        // try {
+        //     await API.deleteComment(comment._id);
+        //     setToggle(prev => !prev);
+        // } catch (error) {
+        //     // Handle the error here
+        //     console.error("An error occurred while deleting the comment:", error);
+        // }
+        let config = {
+            method: 'delete',
+            maxBodyLength: Infinity,
+            url: `http://localhost:5000/comment/delete/${comment._id}`,
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': sessionStorage.getItem('accessToken'),
+            },
+        };
+
+        axios.request(config)
+            .then((response) => {
+                console.log(JSON.stringify(response.data));
+                setToggle(prev => !prev);
+                swal("good job!", 'Comment Deleted SuccessFully', "success");
+                // navigate('/')
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     }
 
 
