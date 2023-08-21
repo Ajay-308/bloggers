@@ -49,7 +49,7 @@ const Comment = ({ comment, setToggle }) => {
         let config = {
             method: 'delete',
             maxBodyLength: Infinity,
-            url: `http://localhost:5000/comment/delete/${comment._id}`,
+            url: `https://authbackend-bgg7.onrender.com/comment/delete/${comment._id}`,
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': sessionStorage.getItem('accessToken'),
