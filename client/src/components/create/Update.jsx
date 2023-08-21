@@ -5,6 +5,7 @@ import { AddCircle as Add } from '@mui/icons-material';
 import { useNavigate, useParams } from 'react-router-dom';
 
 import { API } from '../../service/api';
+import swal from 'sweetalert';
 
 const Container = styled(Box)(({ theme }) => ({
     margin: '50px 100px',
@@ -97,6 +98,7 @@ const Update = () => {
 
     const updateBlogPost = async () => {
         await API.updatePost(post);
+        swal("good job!", 'post updated successfully', "success");
         navigate(`/details/${id}`);
     }
 
