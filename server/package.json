@@ -5,8 +5,7 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "start": "nodemon index.js",
-     "deploy": "npm install && npm run migrations",
+    "start": "node index.js",
     "build": "echo 'No build step required.'"
   },
   "author": "",
