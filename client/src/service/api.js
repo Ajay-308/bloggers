@@ -8,7 +8,7 @@ import {
   getType,
 } from "../utils/common-utils";
 
-const API_URL = "http://localhost:5000";
+const API_URL = "https://authbackend-bgg7.onrender.com/";
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
