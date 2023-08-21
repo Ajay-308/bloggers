@@ -3,7 +3,7 @@ import { Box, styled, Typography, Link } from '@mui/material';
 import { LinkedIn, Email } from '@mui/icons-material';
 
 const Banner = styled(Box)`
-    background: url(https://media.istockphoto.com/id/1311934969/photo/contact-us.jpg?s=1024x1024&w=is&k=20&c=08C4m9cMYF5lUQvtHVSd-X3vIGhuIFgmYbTSNP2AdL4=);
+    background: url(https://img.lovepik.com/background/20211022/large/lovepik-contact-us-background-image_500584282.jpg);
     width: 100%;
     height: 50vh;
     background-position: left 0px top -100px;
