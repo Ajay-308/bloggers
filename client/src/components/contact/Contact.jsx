@@ -4,7 +4,7 @@ import { LinkedIn, Email } from '@mui/icons-material';
 
 const Banner = styled(Box)`
     background: url(https://img.lovepik.com/background/20211022/large/lovepik-contact-us-background-image_500584282.jpg) center/100% repeat-x #000;
-    width: 100%;
+    width: 100vw;
     height: 50vh;
     background-position: left 0px top -100px;
     background-size: cover;
