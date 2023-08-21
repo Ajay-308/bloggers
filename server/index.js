@@ -1,7 +1,7 @@
+import bodyParser from "body-parser";
 import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import bodyParser from "body-parser";
 
 //components
 import Connection from "./databse/db.js";
