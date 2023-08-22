@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+//need to update add array like 
 const CommentSchema = mongoose.Schema({
   name: {
     type: String,
