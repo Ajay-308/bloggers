@@ -23,5 +23,15 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", Router);
 
 console.log("before");
+const PORT = process.env.PORT || 5000;
 
-ConnectDB();
+ConnectDB()
+  .then(() => {
+    app.listen(PORT, () =>
+      console.log(`Server is running successfully on PORT ${PORT}`)
+    );
+  })
+
+  .catch((err) => {
+    console.error("Error connecting to the database:", err.message);
+  });
