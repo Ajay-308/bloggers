@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.ts",
   "scripts": {
-    "dev": "nodemon -r dotenv/config -e ts,tsx --exec ts-node src/index.ts"
+    "dev": "nodemon -r dotenv/config -e ts,tsx --exec ts-node src/index.ts",
+    "build": "echo 'No build step required.'"
   },
   "keywords": [],
   "author": "",
