@@ -1,8 +1,9 @@
 import dotenv from "dotenv";
-import express, { Router } from "express";
+import express from "express";
 import cors from "cors";
 import ConnectDB from "./db/index";
 import bodyParser from "body-parser";
+import Router from "./routes/routes";
 
 dotenv.config({
   path: "./env",
@@ -19,7 +20,7 @@ app.use(
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use("/", Router());
+app.use("/", Router);
 
 console.log("before");
 
