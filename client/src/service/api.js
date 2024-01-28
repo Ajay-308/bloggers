@@ -8,7 +8,7 @@ import {
   getType,
 } from "../utils/common-utils";
 
-const API_URL = "https://localhost:5000";
+const API_URL = "https://backend4-pteq.onrender.com/";
 
 const axiosInstance = axios.create({
   baseURL: API_URL,
