@@ -102,7 +102,7 @@ const DetailView = () => {
         let config = {
             method: 'delete',
             maxBodyLength: Infinity,
-            url: `https://backend4-pteq.onrender.com/delete/${post._id}`,
+            url: `https://backbone1.onrender.com/delete/${post._id}`,
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': sessionStorage.getItem('accessToken'),
