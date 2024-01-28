@@ -49,7 +49,7 @@ const Comment = ({ comment, setToggle }) => {
         let config = {
             method: 'delete',
             maxBodyLength: Infinity,
-            url: `https://backend4-pteq.onrender.com/comment/delete/${comment._id}`,
+            url: `https://backbone1.onrender.com/comment/delete/${comment._id}`,
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': sessionStorage.getItem('accessToken'),
