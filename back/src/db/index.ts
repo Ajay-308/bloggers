@@ -17,7 +17,7 @@ const ConnectDB = async () => {
       throw error;
     });
     app.listen(process.env.PORT, () => {
-      console.log(`DB connected successfully on port :${process.env.PORT}`);
+      console.log(`DB connected successfully`);
     });
   } catch (error) {
     console.error("Error connecting to the database:", error);

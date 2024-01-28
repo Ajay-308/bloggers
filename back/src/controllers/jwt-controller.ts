@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
 
-import Token from "../model/token.js";
+import Token from "../model/token";
 
 dotenv.config();
 

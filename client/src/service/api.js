@@ -8,7 +8,7 @@ import {
   getType,
 } from "../utils/common-utils";
 
-const API_URL = "https://backbone1.onrender.com/";
+const API_URL = "https://localhost:5000";
 
 const axiosInstance = axios.create({
   baseURL: API_URL,

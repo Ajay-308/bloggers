@@ -23,7 +23,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use("/", Router);
 
 console.log("before");
-const PORT = process.env.PORT || 5000;
+const PORT = 5000;
 
 ConnectDB()
   .then(() => {
